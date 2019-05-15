@@ -1,46 +1,5 @@
 FROM ubuntu:14.04
 
-########## Nvidia Docker ##########
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates apt-transport-https gnupg-curl && \
-    rm -rf /var/lib/apt/lists/* && \
-    NVIDIA_GPGKEY_SUM=d1be581509378368edeec8c1eb2958702feedf3bc3d17011adbf24efacce4ab5 && \
-    NVIDIA_GPGKEY_FPR=ae09fe4bbd223a84b2ccfce3f60f4b3d7fa2af80 && \
-    apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64/7fa2af80.pub && \
-    apt-key adv --export --no-emit-version -a $NVIDIA_GPGKEY_FPR | tail -n +2 > cudasign.pub && \
-    echo "$NVIDIA_GPGKEY_SUM  cudasign.pub" | sha256sum -c --strict - && rm cudasign.pub && \
-    echo "deb https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1404/x86_64 /" > /etc/apt/sources.list.d/cuda.list
-
-ENV CUDA_VERSION 8.0.61
-
-ENV CUDA_PKG_VERSION 8-0=$CUDA_VERSION-1
-RUN apt-get update && apt-get install -y --no-install-recommends \
-        cuda-nvrtc-$CUDA_PKG_VERSION \
-        cuda-nvgraph-$CUDA_PKG_VERSION \
-        cuda-cusolver-$CUDA_PKG_VERSION \
-        cuda-cublas-8-0=8.0.61.2-1 \
-        cuda-cufft-$CUDA_PKG_VERSION \
-        cuda-curand-$CUDA_PKG_VERSION \
-        cuda-cusparse-$CUDA_PKG_VERSION \
-        cuda-npp-$CUDA_PKG_VERSION \
-        cuda-cudart-$CUDA_PKG_VERSION && \
-    ln -s cuda-8.0 /usr/local/cuda && \
-    rm -rf /var/lib/apt/lists/*
-
-# nvidia-docker 1.0
-LABEL com.nvidia.volumes.needed="nvidia_driver"
-LABEL com.nvidia.cuda.version="${CUDA_VERSION}"
-
-RUN echo "/usr/local/nvidia/lib" >> /etc/ld.so.conf.d/nvidia.conf && \
-    echo "/usr/local/nvidia/lib64" >> /etc/ld.so.conf.d/nvidia.conf
-
-ENV PATH /usr/local/nvidia/bin:/usr/local/cuda/bin:${PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib:/usr/local/nvidia/lib64
-
-# nvidia-container-runtime
-ENV NVIDIA_VISIBLE_DEVICES all
-ENV NVIDIA_DRIVER_CAPABILITIES compute,utility
-ENV NVIDIA_REQUIRE_CUDA "cuda>=8.0"
-
 ########## ROS-indigo ##########
 RUN sh -c 'echo "deb http://packages.ros.org/ros/ubuntu trusty main" > /etc/apt/sources.list.d/ros-latest.list'
 RUN apt-get update && apt-get install -y wget
@@ -81,7 +40,7 @@ RUN unzip LSD_room.bag.zip
 # 	libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev \
 # 	libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev \
 # 	x264 v4l-utils unzip
-# 	
+#
 # RUN cd /home/${USERNAME} && mkdir opencv && cd opencv && \
 # 	git clone https://github.com/Itseez/opencv.git && \
 # 	cd opencv && git checkout tags/2.4.8 && \
@@ -145,7 +104,7 @@ COPY logicool.yaml /root/.ros/camera_info/head_camera.yaml
 # COPY ibuffaro.yaml /root/.ros/camera_info/head_camera.yaml
 RUN echo " \
 		#!/bin/bash\n\ \
-		roscore &\ 
+		roscore &\
 		rosrun usb_cam usb_cam_node &\
 		rosrun lsd_slam_viewer viewer &\
 		rosrun lsd_slam_core live_slam image:=/usb_cam/image_raw camera_info:=/usb_cam/camera_info &\
