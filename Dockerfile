@@ -31,60 +31,60 @@ RUN unzip LSD_room.bag.zip
 
 ########## OpenCV ###########(cannot use viewer?)
 # RUN apt-get update && apt-get install -y \
-# 	libopencv-dev build-essential checkinstall \
-# 	cmake pkg-config yasm libtiff5-dev libjpeg-dev \
-# 	libjasper-dev libavcodec-dev libavformat-dev \
-# 	libswscale-dev libdc1394-22-dev libxine2-dev \
-# 	libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev \
-# 	libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev \
-# 	libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev \
-# 	libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev \
-# 	x264 v4l-utils unzip
-#
+#     libopencv-dev build-essential checkinstall \
+#     cmake pkg-config yasm libtiff5-dev libjpeg-dev \
+#     libjasper-dev libavcodec-dev libavformat-dev \
+#     libswscale-dev libdc1394-22-dev libxine2-dev \
+#     libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev \
+#     libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev \
+#     libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev \
+#     libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev \
+#     x264 v4l-utils unzip
+
 # RUN cd /home/${USERNAME} && mkdir opencv && cd opencv && \
-# 	git clone https://github.com/Itseez/opencv.git && \
-# 	cd opencv && git checkout tags/2.4.8 && \
-# 	mkdir build && cd build && \
-# 	cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
-# 		-D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON \
-# 		-D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON \
-# 		-D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON .. && \
-# 	make -j 4 && \
-# 	make install && \
-# 	sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf' && \
-# 	ldconfig
+#     git clone https://github.com/Itseez/opencv.git && \
+#     cd opencv && git checkout tags/2.4.8 && \
+#     mkdir build && cd build && \
+#     cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local \
+#         -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON \
+#         -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON \
+#         -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON .. && \
+#     make -j 4 && \
+#     make install && \
+#     sh -c 'echo "/usr/local/lib" > /etc/ld.so.conf.d/opencv.conf' && \
+#     ldconfig
 #
 # RUN cd /home/rosbuild_ws/package_dir && \
-# 	sed -i "/^#.*openFabMap/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt && \
-# 	sed -i "/^#.*FABMAP/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt
+#     sed -i "/^#.*openFabMap/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt && \
+#     sed -i "/^#.*FABMAP/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt
 
 ########## OpenCV ###########
 RUN apt-get update &&\
-	apt-get install -y \
-	build-essential cmake \
-	libjpeg-dev libtiff4-dev libjasper-dev \
-	libgtk2.0-dev \
-	libavcodec-dev libavformat-dev libswscale-dev libv4l-dev &&\
-	cd /home &&\
-	wget https://github.com/Itseez/opencv/archive/2.4.8.zip &&\
-	apt-get update && apt-get install -y unzip &&\
-	unzip 2.4.8.zip &&\
-	cd opencv-2.4.8 &&\
-	mkdir build &&\
-	cd build &&\
-	cmake -D CMAKE_BUILD_TYPE=RELEASE -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_OPENGL=ON .. &&\
- 	cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_OPENGL=ON -D MAKE_INSTALL_PREFIX=/usr/local .. &&\
-	make &&\
- 	make install &&\
-	echo "/usr/local/lib" | sudo tee /etc/ld.so.conf.d/opencv.conf &&\
-	ldconfig &&\
-	export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH &&\
-	export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH &&\
-	export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
+    apt-get install -y \
+    build-essential cmake \
+    libjpeg-dev libtiff4-dev libjasper-dev \
+    libgtk2.0-dev \
+    libavcodec-dev libavformat-dev libswscale-dev libv4l-dev &&\
+    cd /home &&\
+    wget https://github.com/Itseez/opencv/archive/2.4.8.zip &&\
+    apt-get update && apt-get install -y unzip &&\
+    unzip 2.4.8.zip &&\
+    cd opencv-2.4.8 &&\
+    mkdir build &&\
+    cd build &&\
+    cmake -D CMAKE_BUILD_TYPE=RELEASE -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_OPENGL=ON .. &&\
+     cmake -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_OPENGL=ON -D MAKE_INSTALL_PREFIX=/usr/local .. &&\
+    make &&\
+     make install &&\
+    echo "/usr/local/lib" | sudo tee /etc/ld.so.conf.d/opencv.conf &&\
+    ldconfig &&\
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH &&\
+    export LD_LIBRARY_PATH=/usr/local/lib:$LD_LIBRARY_PATH &&\
+    export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
 
 RUN cd /home/rosbuild_ws/package_dir && \
- 	sed -i "/^#.*openFabMap/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt && \
- 	sed -i "/^#.*FABMAP/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt
+     sed -i "/^#.*openFabMap/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt && \
+     sed -i "/^#.*FABMAP/s/^#//" ./lsd_slam/lsd_slam_core/CMakeLists.txt
 
 
 ########## rosmake ##########
@@ -96,46 +96,46 @@ RUN rm /bin/sh && mv /bin/sh_tmp /bin/sh
 
 ########## Running comands ##########
 RUN apt-get update &&\
-	apt-get install -y \
-	ros-indigo-usb-cam \
-	vim
+    apt-get install -y \
+    ros-indigo-usb-cam \
+    vim
 
 COPY logicool.yaml /root/.ros/camera_info/head_camera.yaml
 # COPY ibuffaro.yaml /root/.ros/camera_info/head_camera.yaml
 RUN echo " \
-		#!/bin/bash\n\ \
-		roscore &\
-		rosrun usb_cam usb_cam_node &\
-		rosrun lsd_slam_viewer viewer &\
-		rosrun lsd_slam_core live_slam image:=/usb_cam/image_raw camera_info:=/usb_cam/camera_info &\
-		rosrun rqt_reconfigure rqt_reconfigure \
-	" >> live_slam_webcam.sh &&\
-	chmod 755 live_slam_webcam.sh
+        #!/bin/bash\n\ \
+        roscore &\
+        rosrun usb_cam usb_cam_node &\
+        rosrun lsd_slam_viewer viewer &\
+        rosrun lsd_slam_core live_slam image:=/usb_cam/image_raw camera_info:=/usb_cam/camera_info &\
+        rosrun rqt_reconfigure rqt_reconfigure \
+    " >> live_slam_webcam.sh &&\
+    chmod 755 live_slam_webcam.sh
 
 RUN echo " \
-		#!/bin/bash\n\ \
-		roscore &\
-		rosrun lsd_slam_viewer viewer &\
-		rosrun lsd_slam_core live_slam image:=/image_raw camera_info:=/camera_info &\
-		rosbag play /home/rosbuild_ws/package_dir/lsd_slam/LSD_room.bag \
-	" >> test_LSD_room_bag.sh &&\
-	chmod 755 test_LSD_room_bag.sh
+        #!/bin/bash\n\ \
+        roscore &\
+        rosrun lsd_slam_viewer viewer &\
+        rosrun lsd_slam_core live_slam image:=/image_raw camera_info:=/camera_info &\
+        rosbag play /home/rosbuild_ws/package_dir/lsd_slam/LSD_room.bag \
+    " >> test_LSD_room_bag.sh &&\
+    chmod 755 test_LSD_room_bag.sh
 
 # COPY bagbag.bag /home/rosbuild_ws/package_dir/lsd_slam/
 RUN echo " \
-		#!/bin/bash\n\ \
-		roscore &\
-		rosrun lsd_slam_viewer viewer &\
-		rosrun lsd_slam_core live_slam image:=/image_raw camera_info:=/camera_info &\
-		rosbag play /home/rosbuild_ws/package_dir/lsd_slam/bagbag.bag \
-	" >> use_own_bag.sh &&\
-	chmod 755 use_own_bag.sh
+        #!/bin/bash\n\ \
+        roscore &\
+        rosrun lsd_slam_viewer viewer &\
+        rosrun lsd_slam_core live_slam image:=/image_raw camera_info:=/camera_info &\
+        rosbag play /home/rosbuild_ws/package_dir/lsd_slam/bagbag.bag \
+    " >> use_own_bag.sh &&\
+    chmod 755 use_own_bag.sh
 
 RUN echo " \
-		#!/bin/bash\n\ \
-		roscore &\
-		rosrun lsd_slam_viewer viewer &\
-		rosrun lsd_slam_core live_slam image:=/camera/color/image_raw camera_info:=/camera/color/camera_info &\
-		rosrun rqt_reconfigure rqt_reconfigure \
-	" >> live_slam_realsense.sh &&\
-	chmod 755 live_slam_realsense.sh
+        #!/bin/bash\n\ \
+        roscore &\
+        rosrun lsd_slam_viewer viewer &\
+        rosrun lsd_slam_core live_slam image:=/camera/color/image_raw camera_info:=/camera/color/camera_info &\
+        rosrun rqt_reconfigure rqt_reconfigure \
+    " >> live_slam_realsense.sh &&\
+    chmod 755 live_slam_realsense.sh
