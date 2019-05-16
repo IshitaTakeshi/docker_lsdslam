@@ -32,12 +32,21 @@ You need to fix your webcam in the script file(run_docker.sh).
 Make sure line 13 "--device=/dev/video1:/dev/video0 \".
 + Using just bagfile, not your webcam  
 Delete line 13.
+
 ### 4. Set a permission for the shell script
 		$ chmod 755 run_docker.sh
+
 ### 5. Get into the container
 		($ cd ~/docker_ws/lsdslam)
 		$ ./run_docker.sh lsdslam:latest	//use your image name insted of "lsdslam:latest"
 ### 6. Run
+
+If the GUI window shows only the blank screen, try the 3 steps below:
+
+1. Reinstall [the latest XQuartz](https://www.xquartz.org/releases/XQuartz-2.7.10.html) 
+2. Run `defaults write org.macosforge.xquartz.X11 enable_iglx -bool true` in the terminal
+3. Reboot the computer
+
 #### 6-a. live_slam with your webcam
 
 		//Inside of the container
