@@ -4,14 +4,19 @@
 #   exit 1
 # fi
 
-xhost +
+display_number=$(ps -ef | grep "Xquartz :\d" | grep -v xinit | awk '{ print $9; }')
+ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')
 
-nvidia-docker run -it --rm \
-	--env="DISPLAY" \
-	--env="QT_X11_NO_MITSHM=1" \
-	--volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
-	--device=/dev/video1:/dev/video0 \
-	--net=host \
-	lsdslam
-	# $1
+echo ip = $ip
+echo display number = $display_number
 
+xhost + $ip
+
+# --privileged option for debugging
+docker run -it --rm \
+    -e DISPLAY=$ip$display_number \
+    -e QT_X11_NO_MITSHM=1 \
+    --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
+    --name lsdslam \
+    --privileged \
+    lsdslam
